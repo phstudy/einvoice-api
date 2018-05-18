@@ -1,0 +1,1747 @@
+{
+  "openapi" : "3.0.0",
+  "servers" : [ {
+    "url" : "https://api.einvoice.nat.gov.tw",
+    "description" : "電子發票應用 API 正式環境"
+  } ],
+  "info" : {
+    "description" : "電子發票 API 申請 (查詢發票): \n\nhttps://www.einvoice.nat.gov.tw/APMEMBERVAN/APIService/Registration\n\n電子發票應用 API 規格 1.5 版 PDF:\n\n\nhttps://www.einvoice.nat.gov.tw/home/DownLoad?fileName=1510206773173_0.pdf\n",
+    "version" : "1.5",
+    "title" : "電子發票應用 API 規格",
+    "contact" : {
+      "name" : "財政部電子發票整合服務平台",
+      "url" : "https://www.einvoice.nat.gov.tw/"
+    }
+  },
+  "tags" : [ {
+    "name" : "查詢發票"
+  }, {
+    "name" : "愛心碼"
+  }, {
+    "name" : "載具發票"
+  }, {
+    "name" : "載具"
+  }, {
+    "name" : "API 空白頁面"
+  } ],
+  "security" : [ {
+    "ApiKeyAuth" : [ ]
+  } ],
+  "paths" : {
+    "/PB2CAPIVAN/invapp/InvApp?action=QryWinningList" : {
+      "post" : {
+        "tags" : [ "查詢發票" ],
+        "summary" : "查詢中獎發票號碼清單",
+        "operationId" : "qryWinningList",
+        "description" : "依開獎期別(雙數月)取得查詢期別，中獎獎別、號碼及中獎各獎獎金金額。",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/version02"
+        }, {
+          "$ref" : "#/components/parameters/invTerm"
+        }, {
+          "$ref" : "#/components/parameters/UUID"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "回傳値",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/QryWinningListRes"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/PB2CAPIVAN/invapp/InvApp?action=qryInvHeader" : {
+      "post" : {
+        "tags" : [ "查詢發票" ],
+        "summary" : "查詢發票表頭",
+        "operationId" : "qryInvHeader",
+        "description" : "利用紙本電子發票上的二維條碼(QR Code)或者一維條碼(BarCode)，查詢該紙本電子發票表頭資訊，其回應資訊含:發票號碼、發票開立日期、賣方名稱 及發票狀態等資訊。",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/version03"
+        }, {
+          "$ref" : "#/components/parameters/type"
+        }, {
+          "$ref" : "#/components/parameters/invNum"
+        }, {
+          "in" : "query",
+          "name" : "generation",
+          "description" : "(帶入範例值即可)",
+          "required" : true,
+          "schema" : {
+            "type" : "string",
+            "enum" : [ "V2" ]
+          },
+          "example" : "V2"
+        }, {
+          "$ref" : "#/components/parameters/invDate"
+        }, {
+          "$ref" : "#/components/parameters/UUID"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "回傳値",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/QryInvHeaderRes"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/PB2CAPIVAN/invapp/InvApp?action=qryInvDetail" : {
+      "post" : {
+        "tags" : [ "查詢發票" ],
+        "summary" : "查詢發票明細",
+        "operationId" : "qryInvDetail",
+        "description" : "利用紙本電子發票上的二維條碼(QR Code)或者一維條碼(BarCode)，查詢該紙本電子發票消費明細資料，至多查詢 99 次。",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/version03"
+        }, {
+          "$ref" : "#/components/parameters/type"
+        }, {
+          "$ref" : "#/components/parameters/invNum"
+        }, {
+          "in" : "query",
+          "name" : "generation",
+          "description" : "(帶入範例值即可)",
+          "required" : true,
+          "schema" : {
+            "type" : "string",
+            "enum" : [ "V2" ]
+          },
+          "example" : "V2"
+        }, {
+          "$ref" : "#/components/parameters/qryInvDetailInvTerm"
+        }, {
+          "$ref" : "#/components/parameters/invDate"
+        }, {
+          "$ref" : "#/components/parameters/encrypt"
+        }, {
+          "$ref" : "#/components/parameters/sellerID"
+        }, {
+          "$ref" : "#/components/parameters/randomNumber"
+        }, {
+          "$ref" : "#/components/parameters/UUID"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "回傳値",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/QryInvDetailRes"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/PB2CAPIVAN/loveCodeapp/qryLoveCode" : {
+      "post" : {
+        "tags" : [ "愛心碼" ],
+        "summary" : "愛心碼查詢",
+        "operationId" : "qryLoveCode",
+        "description" : "查詢目前電子發票平台已經完成註冊登記愛心碼的社福團體，並回應社福團體統一編號、愛心碼、社福名稱及社福簡稱等資訊。",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/version02"
+        }, {
+          "in" : "query",
+          "name" : "qKey",
+          "description" : "要查詢的愛心碼/統編之關鍵字",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "621"
+        }, {
+          "in" : "query",
+          "name" : "action",
+          "description" : "API 行為",
+          "required" : true,
+          "schema" : {
+            "type" : "string",
+            "enum" : [ "qryLoveCode" ]
+          },
+          "example" : "qryLoveCode"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "回傳値",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/QryLoveCodeRes"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/PB2CAPIVAN/invServ/InvServ?action=carrierInvChk" : {
+      "post" : {
+        "tags" : [ "載具發票" ],
+        "summary" : "載具發票表頭查詢",
+        "operationId" : "carrierInvChk",
+        "description" : "可依載具卡別及載具隱碼查詢載具內所持有的消費發票。目前尚不支援 icash 卡別直接查詢。",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/version03"
+        }, {
+          "$ref" : "#/components/parameters/cardType"
+        }, {
+          "$ref" : "#/components/parameters/cardNo"
+        }, {
+          "$ref" : "#/components/parameters/expTimeStamp"
+        }, {
+          "$ref" : "#/components/parameters/timeStamp"
+        }, {
+          "in" : "query",
+          "name" : "startDate",
+          "description" : "查詢起始時間 (限制開始及結束查詢時間為相同月份)",
+          "required" : true,
+          "schema" : {
+            "type" : "string",
+            "format" : "日期字串 (yyyy/MM/dd)"
+          },
+          "example" : "2012/07/01"
+        }, {
+          "in" : "query",
+          "name" : "endDate",
+          "description" : "查詢結束時間 (限制開始及結束查詢時間為相同月份)",
+          "required" : true,
+          "schema" : {
+            "type" : "string",
+            "format" : "日期字串 (yyyy/MM/dd)"
+          },
+          "example" : "2012/07/31"
+        }, {
+          "in" : "query",
+          "name" : "onlyWinningInv",
+          "description" : "僅回傳中獎資訊 (Y/N)",
+          "required" : true,
+          "schema" : {
+            "type" : "string",
+            "format" : "特定字串(Y/ N)"
+          },
+          "example" : "Y"
+        }, {
+          "$ref" : "#/components/parameters/UUID"
+        }, {
+          "$ref" : "#/components/parameters/cardEncrypt"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "回傳値",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/CarrierInvChkRes"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/PB2CAPIVAN/invServ/InvServ?action=carrierInvDetail" : {
+      "post" : {
+        "tags" : [ "載具發票" ],
+        "summary" : "載具發票明細查詢",
+        "operationId" : "carrierInvDetail",
+        "description" : "查詢載具內所持有的發票消費明細。目前尚不支援 icash 卡別直接查詢。",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/version03"
+        }, {
+          "$ref" : "#/components/parameters/cardType"
+        }, {
+          "$ref" : "#/components/parameters/cardNo"
+        }, {
+          "$ref" : "#/components/parameters/expTimeStamp"
+        }, {
+          "$ref" : "#/components/parameters/timeStamp"
+        }, {
+          "$ref" : "#/components/parameters/invNum"
+        }, {
+          "$ref" : "#/components/parameters/invDate"
+        }, {
+          "$ref" : "#/components/parameters/UUID"
+        }, {
+          "in" : "query",
+          "name" : "sellerName",
+          "description" : "開立賣方名稱",
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "統一超商"
+        }, {
+          "in" : "query",
+          "name" : "amount",
+          "description" : "金額",
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "25"
+        }, {
+          "$ref" : "#/components/parameters/cardEncrypt"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "回傳値",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/CarrierInvDetailRes"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/PB2CAPIVAN/CarInv/Donate?action=carrierInvDnt" : {
+      "post" : {
+        "tags" : [ "載具發票" ],
+        "summary" : "載具發票捐贈",
+        "operationId" : "carrierInvDnt",
+        "description" : "可針對單一發票，將載具內所持有且尚未開獎之發票，指定愛心團體之統編或愛心碼後利用該功能，捐贈發票給該社福機構。",
+        "security" : [ {
+          "ApiKeyAuth" : [ ],
+          "SignatureAuth" : [ ]
+        } ],
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/version01"
+        }, {
+          "$ref" : "#/components/parameters/serial"
+        }, {
+          "$ref" : "#/components/parameters/cardType"
+        }, {
+          "$ref" : "#/components/parameters/cardNo"
+        }, {
+          "$ref" : "#/components/parameters/expTimeStamp"
+        }, {
+          "$ref" : "#/components/parameters/timeStamp"
+        }, {
+          "$ref" : "#/components/parameters/invDate"
+        }, {
+          "$ref" : "#/components/parameters/invNum"
+        }, {
+          "in" : "query",
+          "name" : "npoBan",
+          "description" : "愛心團體之統編或愛心碼",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "81582505"
+        }, {
+          "$ref" : "#/components/parameters/UUID"
+        }, {
+          "$ref" : "#/components/parameters/cardEncrypt"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "回傳値",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/CarrierInvDntRes"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/PB2CAPIVAN/Carrier/Aggregate" : {
+      "post" : {
+        "tags" : [ "載具" ],
+        "summary" : "手機條碼歸戶載具查詢",
+        "operationId" : "qryCarrierAgg",
+        "description" : "查詢單一手機條碼目前有效的歸戶載具。",
+        "security" : [ {
+          "ApiKeyAuth" : [ ],
+          "SignatureAuth" : [ ]
+        } ],
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/version10"
+        }, {
+          "in" : "query",
+          "name" : "action",
+          "description" : "API 行為(帶入範例值即可)",
+          "required" : true,
+          "schema" : {
+            "type" : "string",
+            "enum" : [ "qryCarrierAgg" ]
+          },
+          "example" : "qryCarrierAgg"
+        }, {
+          "$ref" : "#/components/parameters/serial"
+        }, {
+          "$ref" : "#/components/parameters/cardType"
+        }, {
+          "$ref" : "#/components/parameters/cardNo"
+        }, {
+          "$ref" : "#/components/parameters/cardEncrypt"
+        }, {
+          "$ref" : "#/components/parameters/timeStamp"
+        }, {
+          "$ref" : "#/components/parameters/UUID"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "回傳値",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/QryCarrierAggRes"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ods-main/ODS3" : {
+      "servers" : [ {
+        "url" : "https://sip.einvoice.nat.gov.tw"
+      } ],
+      "get" : {
+        "tags" : [ "載具" ],
+        "summary" : "已歸戶載具個別化主題",
+        "operationId" : "ods",
+        "description" : "查詢已歸戶載具個別化主題統計資訊。",
+        "security" : [ {
+          "ApiKeyAuth" : [ ],
+          "SignatureAuth" : [ ]
+        } ],
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/version10"
+        }, {
+          "in" : "query",
+          "name" : "barcode",
+          "required" : true,
+          "description" : "手機條碼",
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "/ABC.122"
+        }, {
+          "in" : "query",
+          "name" : "verifyCode",
+          "required" : true,
+          "description" : "驗證碼",
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "1234"
+        }, {
+          "in" : "query",
+          "name" : "invoiceDateS",
+          "required" : true,
+          "description" : "發票日期起 yyyyMM",
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "20140101"
+        }, {
+          "in" : "query",
+          "name" : "invoiceDateE",
+          "required" : true,
+          "description" : "發票日期迄 yyyyMM",
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "20151010"
+        }, {
+          "in" : "query",
+          "name" : "hsnNm",
+          "description" : "縣市(用 URLEncode)",
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "臺北市"
+        }, {
+          "in" : "query",
+          "name" : "townNm",
+          "description" : "鄉鎮市區(用 URLEncode)",
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "大安區"
+        }, {
+          "in" : "query",
+          "name" : "busiChiNm",
+          "description" : "商店種類(用 URLEncode)",
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "百貨公司"
+        }, {
+          "in" : "query",
+          "name" : "cardTypeNm",
+          "description" : "載具別(用 URLEncode)",
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "共通性載具"
+        }, {
+          "in" : "query",
+          "name" : "cardCodeNm",
+          "description" : "載具名稱(用 URLEncode)",
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "手機條碼"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "回傳値",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/OdsRes"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/PB2CAPIVAN/APIService/generalCarrierRegBlank" : {
+      "post" : {
+        "tags" : [ "API 空白頁面" ],
+        "summary" : "手機條碼載具註冊",
+        "operationId" : "generalCarrierRegBlank",
+        "description" : "手機條碼註冊功能，該功能僅提供手機條碼註冊，但相關郵件驗證開通及匯款或歸戶設定請至電子發票整合服務平台進行操作。",
+        "security" : [ {
+          "ApiKeyAuth" : [ ]
+        } ],
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/UUID"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "回傳値",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Res"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/PB2CAPIVAN/APIService/carrierLinkBlank" : {
+      "post" : {
+        "tags" : [ "API 空白頁面" ],
+        "summary" : "載具歸戶(手機條碼)",
+        "operationId" : "carrierLinkBlank",
+        "description" : "提供以載具卡號及驗證碼方式歸戶手機條碼功能。",
+        "security" : [ {
+          "ApiKeyAuth" : [ ]
+        } ],
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/UUID"
+        }, {
+          "$ref" : "#/components/parameters/CardCode"
+        }, {
+          "$ref" : "#/components/parameters/CardNo"
+        }, {
+          "$ref" : "#/components/parameters/VerifyCode"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "回傳値",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Res"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/PB2CAPIVAN/APIService/carrierBankAccBlank" : {
+      "post" : {
+        "tags" : [ "API 空白頁面" ],
+        "summary" : "手機條碼綁定金融帳戶",
+        "operationId" : "carrierBankAccBlank",
+        "description" : "手機條碼金融卡帳號設定。",
+        "security" : [ {
+          "ApiKeyAuth" : [ ]
+        } ],
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/UUID"
+        }, {
+          "$ref" : "#/components/parameters/CardCode"
+        }, {
+          "$ref" : "#/components/parameters/CardNo"
+        }, {
+          "$ref" : "#/components/parameters/VerifyCode"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "回傳値",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Res"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/PB2CAPIVAN/APIService/carrierInvDntBlank" : {
+      "post" : {
+        "tags" : [ "API 空白頁面" ],
+        "summary" : "載具發票捐贈(手機條碼)",
+        "operationId" : "carrierInvDntBlank",
+        "description" : "提供手機條碼及手機條碼下歸戶載具，查詢出尚可捐贈發票並可針對查詢出之發票進行捐贈。",
+        "security" : [ {
+          "ApiKeyAuth" : [ ]
+        } ],
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/UUID"
+        }, {
+          "$ref" : "#/components/parameters/CardCode"
+        }, {
+          "$ref" : "#/components/parameters/CardNo"
+        }, {
+          "$ref" : "#/components/parameters/VerifyCode"
+        }, {
+          "in" : "query",
+          "name" : "DntNo",
+          "description" : "捐贈之愛心碼或統編",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "847"
+        }, {
+          "in" : "query",
+          "name" : "QryYM",
+          "description" : "發票開立年月 (年月)",
+          "required" : true,
+          "schema" : {
+            "type" : "string",
+            "format" : "日期字串 (yyyymm)"
+          },
+          "example" : "201303"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "回傳値",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Res"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "securitySchemes" : {
+      "ApiKeyAuth" : {
+        "type" : "apiKey",
+        "in" : "query",
+        "name" : "appID",
+        "description" : "透過財政資訊中心大平台申請之軟體 ID (請參考取得應用程式帳號 (appID))"
+      },
+      "SignatureAuth" : {
+        "type" : "apiKey",
+        "in" : "query",
+        "name" : "signature",
+        "description" : "簽名參數"
+      }
+    },
+    "parameters" : {
+      "version01" : {
+        "name" : "version",
+        "in" : "query",
+        "description" : "版本號碼",
+        "required" : true,
+        "schema" : {
+          "type" : "number",
+          "enum" : [ 0.1 ]
+        },
+        "example" : 0.1
+      },
+      "version02" : {
+        "name" : "version",
+        "in" : "query",
+        "description" : "版本號碼",
+        "required" : true,
+        "schema" : {
+          "type" : "number",
+          "enum" : [ 0.2 ]
+        },
+        "example" : 0.2
+      },
+      "version03" : {
+        "name" : "version",
+        "in" : "query",
+        "description" : "版本號碼",
+        "required" : true,
+        "schema" : {
+          "type" : "number",
+          "enum" : [ 0.3 ]
+        },
+        "example" : 0.3
+      },
+      "version10" : {
+        "name" : "version",
+        "in" : "query",
+        "description" : "版本號碼",
+        "required" : true,
+        "schema" : {
+          "type" : "number",
+          "enum" : [ 1.0 ]
+        },
+        "example" : 1.0
+      },
+      "invTerm" : {
+        "name" : "invTerm",
+        "in" : "query",
+        "description" : "使用者啟用碼",
+        "required" : true,
+        "schema" : {
+          "type" : "string",
+          "format" : "日期字串 (yyyMM)"
+        },
+        "example" : 10106
+      },
+      "appID" : {
+        "name" : "appID",
+        "in" : "query",
+        "description" : "透過財政資訊中心大平台申請之軟體 ID",
+        "required" : true,
+        "schema" : {
+          "type" : "string"
+        }
+      },
+      "UUID" : {
+        "name" : "UUID",
+        "in" : "query",
+        "description" : "行動工具 Unique ID",
+        "required" : false,
+        "schema" : {
+          "type" : "string"
+        }
+      },
+      "type" : {
+        "name" : "type",
+        "in" : "query",
+        "description" : "發票查詢時使用的條碼別 (大小寫有別)",
+        "required" : true,
+        "schema" : {
+          "type" : "string",
+          "enum" : [ "QRCode", "Barcode" ]
+        },
+        "example" : "Barcode"
+      },
+      "invNum" : {
+        "name" : "invNum",
+        "in" : "query",
+        "description" : "發票號碼",
+        "required" : true,
+        "schema" : {
+          "type" : "string"
+        },
+        "example" : "AB12345678"
+      },
+      "invDate" : {
+        "name" : "invDate",
+        "in" : "query",
+        "description" : "發票日期",
+        "required" : true,
+        "schema" : {
+          "type" : "string",
+          "format" : "日期字串 (yyyy/MM/dd)"
+        },
+        "example" : "2012/07/11"
+      },
+      "qryInvDetailInvTerm" : {
+        "name" : "invTerm",
+        "in" : "query",
+        "description" : "發票期別 (發票民國年月，年分 為民國年，月份必須為雙數月) (Type 為 Barcode 時為必填)",
+        "required" : false,
+        "schema" : {
+          "type" : "string",
+          "format" : "日期字串 (yyyMM)"
+        },
+        "example" : 10108
+      },
+      "encrypt" : {
+        "name" : "encrypt",
+        "in" : "query",
+        "description" : "發票檢驗碼 (Type 為 QRCode 時為必填)",
+        "required" : false,
+        "schema" : {
+          "type" : "string"
+        }
+      },
+      "sellerID" : {
+        "name" : "sellerID",
+        "in" : "query",
+        "description" : "商家統編 (Type 為 QRCode 時為必填)",
+        "required" : false,
+        "schema" : {
+          "type" : "string"
+        }
+      },
+      "randomNumber" : {
+        "name" : "randomNumber",
+        "in" : "query",
+        "description" : "4 位隨機碼",
+        "required" : true,
+        "schema" : {
+          "type" : "string"
+        },
+        "example" : "0000"
+      },
+      "cardEncrypt" : {
+        "name" : "cardEncrypt",
+        "in" : "query",
+        "description" : "卡片檢驗碼 (手機條碼驗證碼)",
+        "required" : true,
+        "schema" : {
+          "type" : "string"
+        }
+      },
+      "expTimeStamp" : {
+        "name" : "expTimeStamp",
+        "in" : "query",
+        "description" : "有效存續時間戳記",
+        "required" : true,
+        "schema" : {
+          "type" : "string"
+        },
+        "example" : "2147483647"
+      },
+      "timeStamp" : {
+        "name" : "timeStamp",
+        "in" : "query",
+        "description" : "時間戳記 (請參考時間戳記參數使用說明)",
+        "required" : true,
+        "schema" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "example" : 1344102065
+      },
+      "serial" : {
+        "name" : "serial",
+        "in" : "query",
+        "description" : "傳送時的序號 (請參考序號參數使用說明)",
+        "required" : true,
+        "schema" : {
+          "type" : "string",
+          "format" : "字串(10 位數字)"
+        },
+        "example" : "0000000001"
+      },
+      "cardType" : {
+        "name" : "cardType",
+        "in" : "query",
+        "description" : "卡別 (3J0002-手機條碼; 1K0001-悠遊卡; 1H0001-一卡通; 2G0001-愛金卡)",
+        "required" : true,
+        "schema" : {
+          "type" : "string",
+          "enum" : [ "3J0002", "1K0001", "1H0001", "2G0001" ]
+        },
+        "example" : "3J0002"
+      },
+      "cardNo" : {
+        "name" : "cardNo",
+        "in" : "query",
+        "description" : "卡片隱碼",
+        "required" : true,
+        "schema" : {
+          "type" : "string"
+        },
+        "example" : "/AB56P5Q"
+      },
+      "signature" : {
+        "in" : "query",
+        "name" : "signature",
+        "description" : "簽名 (請參考簽名參數使用說明)",
+        "required" : true,
+        "schema" : {
+          "type" : "string"
+        }
+      },
+      "CardCode" : {
+        "in" : "query",
+        "name" : "CardCode",
+        "description" : "卡別",
+        "required" : true,
+        "schema" : {
+          "type" : "string"
+        },
+        "example" : "3J0002"
+      },
+      "CardNo" : {
+        "in" : "query",
+        "name" : "CardNo",
+        "description" : "卡片隱碼",
+        "required" : true,
+        "schema" : {
+          "type" : "string"
+        },
+        "example" : "/ABCDEFG"
+      },
+      "VerifyCode" : {
+        "in" : "query",
+        "name" : "VerifyCode",
+        "description" : "驗證碼",
+        "required" : true,
+        "schema" : {
+          "type" : "string"
+        }
+      }
+    },
+    "schemas" : {
+      "v" : {
+        "type" : "string",
+        "description" : "版本號碼",
+        "example" : "0.1"
+      },
+      "code" : {
+        "type" : "string",
+        "description" : "訊息回應碼",
+        "example" : "200"
+      },
+      "msg" : {
+        "type" : "string",
+        "description" : "系統回應訊息",
+        "example" : "查詢成功"
+      },
+      "invNum" : {
+        "type" : "string",
+        "description" : "發票號碼",
+        "example" : "EV54838339"
+      },
+      "invDate" : {
+        "type" : "string",
+        "format" : "日期字串 (yyyyMMdd)",
+        "description" : "發票開立日期",
+        "example" : "20120830"
+      },
+      "sellerName" : {
+        "type" : "string",
+        "description" : "賣方名稱",
+        "example" : "台科大門市"
+      },
+      "invStatus" : {
+        "type" : "string",
+        "description" : "發票狀態",
+        "example" : "已確認"
+      },
+      "invPeriod" : {
+        "type" : "string",
+        "description" : "對獎發票期別 (V1.4 版本新增回應參數)",
+        "example" : "YYYMM(民國年雙數月)"
+      },
+      "sellerBan" : {
+        "type" : "string",
+        "description" : "賣方營業人統編",
+        "example" : "12345678"
+      },
+      "sellerAddress" : {
+        "type" : "string",
+        "description" : "賣方營業人地址",
+        "nullable" : true,
+        "example" : "台北市大安區基隆路四段 43 號"
+      },
+      "invoiceTime" : {
+        "type" : "string",
+        "description" : "發票開立時間 (V1.4.4 版本新增回應參數)",
+        "example" : "HH:mm:ss(時分秒)"
+      },
+      "cardNo" : {
+        "type" : "string",
+        "description" : "卡片(載具)隱碼",
+        "nullable" : true,
+        "example" : "/XCCYDHQ"
+      },
+      "cardType" : {
+        "type" : "string",
+        "description" : "卡別",
+        "nullable" : true,
+        "example" : "3J0002"
+      },
+      "hashSerial" : {
+        "type" : "string",
+        "description" : "以 Base64(HMac-SHA1(UTF8(Serial))) 後的結果",
+        "example" : "zJmi4y6byURiat1VmH/vZfwNibU="
+      },
+      "QryWinningListRes" : {
+        "type" : "object",
+        "properties" : {
+          "v" : {
+            "$ref" : "#/components/schemas/v"
+          },
+          "code" : {
+            "$ref" : "#/components/schemas/code"
+          },
+          "msg" : {
+            "$ref" : "#/components/schemas/msg"
+          },
+          "invoYm" : {
+            "type" : "string",
+            "description" : "查詢開獎期別",
+            "example" : "10106"
+          },
+          "superPrizeNo" : {
+            "type" : "string",
+            "description" : "千萬特獎號碼",
+            "example" : "29734661"
+          },
+          "spcPrizeNo" : {
+            "type" : "string",
+            "description" : "特獎號碼",
+            "example" : "99028391"
+          },
+          "spcPrizeNo2" : {
+            "type" : "string",
+            "description" : "特獎號碼 2",
+            "nullable" : true
+          },
+          "spcPrizeNo3" : {
+            "type" : "string",
+            "description" : "特獎號碼 3",
+            "nullable" : true
+          },
+          "firstPrizeNo1" : {
+            "type" : "string",
+            "description" : "頭獎號碼 1",
+            "example" : "91180939"
+          },
+          "firstPrizeNo2" : {
+            "type" : "string",
+            "description" : "頭獎號碼 2",
+            "example" : "12753377"
+          },
+          "firstPrizeNo3" : {
+            "type" : "string",
+            "description" : "頭獎號碼 3",
+            "example" : "22638178"
+          },
+          "firstPrizeNo4" : {
+            "type" : "string",
+            "description" : "頭獎號碼 4",
+            "nullable" : true
+          },
+          "firstPrizeNo5" : {
+            "type" : "string",
+            "description" : "頭獎號碼 5",
+            "nullable" : true
+          },
+          "firstPrizeNo6" : {
+            "type" : "string",
+            "description" : "頭獎號碼 6",
+            "nullable" : true
+          },
+          "firstPrizeNo7" : {
+            "type" : "string",
+            "description" : "頭獎號碼 7",
+            "nullable" : true
+          },
+          "firstPrizeNo8" : {
+            "type" : "string",
+            "description" : "頭獎號碼 8",
+            "nullable" : true
+          },
+          "firstPrizeNo9" : {
+            "type" : "string",
+            "description" : "頭獎號碼 9",
+            "nullable" : true
+          },
+          "firstPrizeNo10" : {
+            "type" : "string",
+            "description" : "頭獎號碼 10",
+            "nullable" : true
+          },
+          "sixthPrizeNo1" : {
+            "type" : "string",
+            "description" : "六獎號碼 1",
+            "nullable" : true,
+            "example" : "258"
+          },
+          "sixthPrizeNo2" : {
+            "type" : "string",
+            "description" : "六獎號碼 2",
+            "nullable" : true,
+            "example" : "066"
+          },
+          "sixthPrizeNo3" : {
+            "type" : "string",
+            "description" : "六獎號碼 3",
+            "nullable" : true,
+            "example" : "321"
+          },
+          "superPrizeAmt" : {
+            "type" : "string",
+            "description" : "千萬特獎金額",
+            "example" : "10000000"
+          },
+          "spcPrizeAmt" : {
+            "type" : "string",
+            "description" : "特獎金額",
+            "example" : "02000000"
+          },
+          "firstPrizeAmt" : {
+            "type" : "string",
+            "description" : "頭獎金額",
+            "example" : "00200000"
+          },
+          "secondPrizeAmt" : {
+            "type" : "string",
+            "description" : "二獎金額",
+            "example" : "00040000"
+          },
+          "thirdPrizeAmt" : {
+            "type" : "string",
+            "description" : "三獎金額",
+            "example" : "00010000"
+          },
+          "fourthPrizeAmt" : {
+            "type" : "string",
+            "description" : "四獎金額",
+            "example" : "00004000"
+          },
+          "fifthPrizeAmt" : {
+            "type" : "string",
+            "description" : "五獎金額",
+            "example" : "00001000"
+          },
+          "sixthPrizeAmt" : {
+            "type" : "string",
+            "description" : "六獎金額",
+            "example" : "00000200"
+          },
+          "sixthPrizeNo4" : {
+            "type" : "string",
+            "description" : "六獎號碼 4",
+            "nullable" : true,
+            "example" : "258"
+          },
+          "sixthPrizeNo5" : {
+            "type" : "string",
+            "description" : "六獎號碼 5",
+            "nullable" : true,
+            "example" : "066"
+          },
+          "sixthPrizeNo6" : {
+            "type" : "string",
+            "description" : "六獎號碼 6",
+            "nullable" : true,
+            "example" : "123"
+          }
+        }
+      },
+      "QryInvHeaderRes" : {
+        "type" : "object",
+        "properties" : {
+          "v" : {
+            "$ref" : "#/components/schemas/v"
+          },
+          "code" : {
+            "$ref" : "#/components/schemas/code"
+          },
+          "msg" : {
+            "$ref" : "#/components/schemas/msg"
+          },
+          "invNum" : {
+            "$ref" : "#/components/schemas/invNum"
+          },
+          "invDate" : {
+            "$ref" : "#/components/schemas/invDate"
+          },
+          "sellerName" : {
+            "$ref" : "#/components/schemas/sellerName"
+          },
+          "invStatus" : {
+            "$ref" : "#/components/schemas/invStatus"
+          },
+          "invPeriod" : {
+            "$ref" : "#/components/schemas/invPeriod"
+          },
+          "sellerBan" : {
+            "$ref" : "#/components/schemas/sellerBan"
+          },
+          "sellerAddress" : {
+            "$ref" : "#/components/schemas/sellerAddress"
+          },
+          "invoiceTime" : {
+            "$ref" : "#/components/schemas/invoiceTime"
+          }
+        }
+      },
+      "QryInvDetailRes" : {
+        "type" : "object",
+        "properties" : {
+          "v" : {
+            "$ref" : "#/components/schemas/v"
+          },
+          "code" : {
+            "$ref" : "#/components/schemas/code"
+          },
+          "msg" : {
+            "$ref" : "#/components/schemas/msg"
+          },
+          "invNum" : {
+            "$ref" : "#/components/schemas/invNum"
+          },
+          "invDate" : {
+            "$ref" : "#/components/schemas/invDate"
+          },
+          "sellerName" : {
+            "$ref" : "#/components/schemas/sellerName"
+          },
+          "invStatus" : {
+            "$ref" : "#/components/schemas/invStatus"
+          },
+          "invPeriod" : {
+            "$ref" : "#/components/schemas/invPeriod"
+          },
+          "sellerBan" : {
+            "$ref" : "#/components/schemas/sellerBan"
+          },
+          "sellerAddress" : {
+            "$ref" : "#/components/schemas/sellerAddress"
+          },
+          "invoiceTime" : {
+            "$ref" : "#/components/schemas/invoiceTime"
+          },
+          "details" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/qryInvDetail"
+            }
+          }
+        }
+      },
+      "qryInvDetail" : {
+        "type" : "object",
+        "properties" : {
+          "rowNum" : {
+            "type" : "string",
+            "description" : "明細編號",
+            "example" : "001"
+          },
+          "description" : {
+            "type" : "string",
+            "description" : "摩斯雞塊",
+            "example" : "品名"
+          },
+          "quantity" : {
+            "type" : "string",
+            "description" : "數量",
+            "example" : "1.0000"
+          },
+          "unitPrice" : {
+            "type" : "string",
+            "description" : "單價",
+            "example" : "25.0000"
+          },
+          "amount" : {
+            "type" : "string",
+            "description" : "小計",
+            "example" : "30.00"
+          }
+        }
+      },
+      "QryLoveCodeRes" : {
+        "type" : "object",
+        "properties" : {
+          "v" : {
+            "$ref" : "#/components/schemas/v"
+          },
+          "code" : {
+            "$ref" : "#/components/schemas/code"
+          },
+          "msg" : {
+            "$ref" : "#/components/schemas/msg"
+          },
+          "details" : {
+            "type" : "array",
+            "description" : "社福團體明細",
+            "items" : {
+              "$ref" : "#/components/schemas/qryLoveCodeDetail"
+            }
+          }
+        }
+      },
+      "qryLoveCodeDetail" : {
+        "type" : "object",
+        "properties" : {
+          "rowNum" : {
+            "type" : "string",
+            "description" : "第 1 筆資料",
+            "example" : "0"
+          },
+          "SocialWelfareBAN" : {
+            "type" : "string",
+            "description" : "社福團體統一編號",
+            "example" : "05200169"
+          },
+          "LoveCode" : {
+            "type" : "string",
+            "description" : "社福團體愛心碼",
+            "example" : "25885"
+          },
+          "SocialWelfareName" : {
+            "type" : "string",
+            "description" : "社福團體名稱",
+            "example" : "財團法人伊甸社會福利基金會"
+          },
+          "SocialWelfareAbbrev" : {
+            "type" : "string",
+            "description" : "社福團體簡稱",
+            "example" : "社福團體簡稱"
+          }
+        }
+      },
+      "CarrierInvChkRes" : {
+        "type" : "object",
+        "properties" : {
+          "v" : {
+            "$ref" : "#/components/schemas/v"
+          },
+          "code" : {
+            "$ref" : "#/components/schemas/code"
+          },
+          "msg" : {
+            "$ref" : "#/components/schemas/msg"
+          },
+          "onlyWinningInv" : {
+            "type" : "string",
+            "description" : "僅中獎發票資訊",
+            "example" : "N"
+          },
+          "details" : {
+            "type" : "array",
+            "description" : "發票明細",
+            "items" : {
+              "$ref" : "#/components/schemas/carrierInvChkDetail"
+            }
+          }
+        }
+      },
+      "carrierInvChkDetail" : {
+        "type" : "object",
+        "properties" : {
+          "rowNum" : {
+            "type" : "string",
+            "description" : "第 1 筆資料",
+            "example" : "1"
+          },
+          "invNum" : {
+            "$ref" : "#/components/schemas/invNum"
+          },
+          "cardType" : {
+            "$ref" : "#/components/schemas/cardType"
+          },
+          "cardNo" : {
+            "$ref" : "#/components/schemas/cardNo"
+          },
+          "sellerName" : {
+            "$ref" : "#/components/schemas/sellerName"
+          },
+          "invStatus" : {
+            "$ref" : "#/components/schemas/invStatus"
+          },
+          "invDonatable" : {
+            "type" : "string",
+            "description" : "發票可否捐贈",
+            "example" : "true"
+          },
+          "amount" : {
+            "type" : "string",
+            "description" : "總金額(V1.4.1 版 本新增回應參數)",
+            "example" : "81"
+          },
+          "invPeriod" : {
+            "$ref" : "#/components/schemas/invPeriod"
+          },
+          "donateMark" : {
+            "type" : "string",
+            "description" : "捐贈註記(V1.4.2 版本新增回應參數)，需求參數 version 要傳入 0.2",
+            "example" : "0 表示未捐贈 1 表示已捐贈"
+          },
+          "sellerBan" : {
+            "$ref" : "#/components/schemas/sellerBan"
+          },
+          "sellerAddress" : {
+            "$ref" : "#/components/schemas/sellerAddress"
+          },
+          "invoiceTime" : {
+            "$ref" : "#/components/schemas/invoiceTime"
+          },
+          "invDate" : {
+            "$ref" : "#/components/schemas/invDateDetail"
+          }
+        }
+      },
+      "invDateDetail" : {
+        "type" : "object",
+        "properties" : {
+          "year" : {
+            "type" : "string",
+            "description" : "年",
+            "example" : "112"
+          },
+          "month" : {
+            "type" : "string",
+            "description" : "月",
+            "example" : "6"
+          },
+          "date" : {
+            "type" : "string",
+            "description" : "日",
+            "example" : "9"
+          },
+          "day" : {
+            "type" : "string",
+            "description" : "星期",
+            "example" : "1"
+          },
+          "hours" : {
+            "type" : "string",
+            "description" : "小時",
+            "example" : "0"
+          },
+          "minutes" : {
+            "type" : "string",
+            "description" : "分",
+            "example" : "0"
+          },
+          "seconds" : {
+            "type" : "string",
+            "description" : "秒",
+            "example" : "0"
+          },
+          "time" : {
+            "type" : "string",
+            "description" : "時間戳記",
+            "example" : "1341763200000"
+          },
+          "timezoneOffset" : {
+            "type" : "string",
+            "description" : "時區",
+            "example" : "-480"
+          }
+        }
+      },
+      "CarrierInvDetailRes" : {
+        "type" : "object",
+        "properties" : {
+          "v" : {
+            "$ref" : "#/components/schemas/v"
+          },
+          "code" : {
+            "$ref" : "#/components/schemas/code"
+          },
+          "msg" : {
+            "$ref" : "#/components/schemas/msg"
+          },
+          "invNum" : {
+            "$ref" : "#/components/schemas/invNum"
+          },
+          "invDate" : {
+            "$ref" : "#/components/schemas/invDate"
+          },
+          "sellerName" : {
+            "$ref" : "#/components/schemas/sellerName"
+          },
+          "amount" : {
+            "type" : "string",
+            "description" : "總金額",
+            "example" : "81"
+          },
+          "invStatus" : {
+            "$ref" : "#/components/schemas/invStatus"
+          },
+          "sellerBan" : {
+            "$ref" : "#/components/schemas/sellerBan"
+          },
+          "sellerAddress" : {
+            "$ref" : "#/components/schemas/sellerAddress"
+          },
+          "invoiceTime" : {
+            "$ref" : "#/components/schemas/invoiceTime"
+          },
+          "details" : {
+            "$ref" : "#/components/schemas/carrierInvDetail"
+          }
+        }
+      },
+      "carrierInvDetail" : {
+        "type" : "object",
+        "properties" : {
+          "rowNum" : {
+            "type" : "string",
+            "description" : "第一筆明細編號",
+            "example" : "1"
+          },
+          "description" : {
+            "type" : "string",
+            "description" : "品名",
+            "example" : "奶茶"
+          },
+          "quantity" : {
+            "type" : "string",
+            "description" : "數量",
+            "example" : "2"
+          },
+          "unitPrice" : {
+            "type" : "string",
+            "description" : "單價",
+            "example" : "28"
+          },
+          "amount" : {
+            "type" : "string",
+            "description" : "小計",
+            "example" : "56.00"
+          }
+        }
+      },
+      "CarrierInvDntRes" : {
+        "type" : "object",
+        "properties" : {
+          "v" : {
+            "$ref" : "#/components/schemas/v"
+          },
+          "code" : {
+            "$ref" : "#/components/schemas/code"
+          },
+          "msg" : {
+            "$ref" : "#/components/schemas/msg"
+          },
+          "hashSerial" : {
+            "$ref" : "#/components/schemas/hashSerial"
+          },
+          "invNum" : {
+            "$ref" : "#/components/schemas/invNum"
+          },
+          "invDate" : {
+            "$ref" : "#/components/schemas/invDate"
+          },
+          "NPOBan" : {
+            "type" : "string",
+            "description" : "社福團體統一編號/愛心碼",
+            "example" : "5520"
+          },
+          "invStatus" : {
+            "$ref" : "#/components/schemas/invStatus"
+          },
+          "invDntTimeStamp" : {
+            "type" : "string",
+            "description" : "發票捐贈時間戳記",
+            "example" : "1344102065"
+          }
+        }
+      },
+      "QryCarrierAggRes" : {
+        "type" : "object",
+        "properties" : {
+          "v" : {
+            "$ref" : "#/components/schemas/v"
+          },
+          "code" : {
+            "$ref" : "#/components/schemas/code"
+          },
+          "hashSerial" : {
+            "$ref" : "#/components/schemas/hashSerial"
+          },
+          "msg" : {
+            "$ref" : "#/components/schemas/msg"
+          },
+          "cardType" : {
+            "$ref" : "#/components/schemas/cardType"
+          },
+          "cardNo" : {
+            "$ref" : "#/components/schemas/cardNo"
+          },
+          "carriers" : {
+            "$ref" : "#/components/schemas/qryCarrierAggCarrer"
+          }
+        }
+      },
+      "qryCarrierAggCarrer" : {
+        "type" : "object",
+        "properties" : {
+          "carrierType" : {
+            "type" : "string",
+            "description" : "載具類別",
+            "example" : "1K0001"
+          },
+          "carrierId2" : {
+            "type" : "string",
+            "description" : "載具隱碼",
+            "example" : "12a9124C"
+          },
+          "carrierName" : {
+            "type" : "string",
+            "description" : "載具名稱",
+            "example" : "悠遊卡"
+          }
+        }
+      },
+      "OdsRes" : {
+        "type" : "object",
+        "properties" : {
+          "v" : {
+            "$ref" : "#/components/schemas/v"
+          },
+          "code" : {
+            "$ref" : "#/components/schemas/code"
+          },
+          "msg" : {
+            "$ref" : "#/components/schemas/msg"
+          },
+          "invoiceYmS" : {
+            "type" : "string",
+            "description" : "發票日期起",
+            "example" : "20140101"
+          },
+          "invoiceYmE" : {
+            "type" : "string",
+            "description" : "發票日期迄",
+            "example" : "20151010"
+          },
+          "hsnNm" : {
+            "type" : "string",
+            "description" : "縣市",
+            "example" : "臺北市"
+          },
+          "townNm" : {
+            "type" : "string",
+            "description" : "鄉鎮市區",
+            "example" : "大安區"
+          },
+          "busiChiNm" : {
+            "type" : "string",
+            "description" : "商店種類",
+            "example" : "百貨公司"
+          },
+          "cardTypeNm" : {
+            "type" : "string",
+            "description" : "載具名稱",
+            "example" : "悠遊卡"
+          },
+          "carrierName" : {
+            "type" : "string",
+            "description" : "載具類別名稱",
+            "example" : "共通性載具"
+          },
+          "cardCodeNm" : {
+            "type" : "string",
+            "description" : "載具名稱",
+            "example" : "手機條碼"
+          },
+          "details" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/odsDetail"
+            }
+          }
+        }
+      },
+      "odsDetail" : {
+        "type" : "object",
+        "properties" : {
+          "invoiceDate" : {
+            "type" : "string",
+            "description" : "發票日期",
+            "example" : "20151010"
+          },
+          "busiChiNm" : {
+            "type" : "string",
+            "description" : "商店種類",
+            "example" : "百貨公司"
+          },
+          "hsnNm" : {
+            "type" : "string",
+            "description" : "縣市",
+            "example" : "臺北市"
+          },
+          "townNm" : {
+            "type" : "string",
+            "description" : "鄉鎮市區",
+            "example" : "大安區"
+          },
+          "cardTypeNm" : {
+            "type" : "string",
+            "description" : "載具類別名稱",
+            "example" : "共通性載具"
+          },
+          "cardCodeNm" : {
+            "type" : "string",
+            "description" : "載具名稱",
+            "example" : "手機條碼"
+          },
+          "invoiceCount" : {
+            "type" : "integer",
+            "description" : "電子發票數量",
+            "example" : 1
+          },
+          "dntCount" : {
+            "type" : "integer",
+            "description" : "捐贈發票張數",
+            "example" : 1
+          },
+          "dntAmount" : {
+            "type" : "integer",
+            "description" : "捐贈發票金額",
+            "example" : 1
+          },
+          "prizeCount" : {
+            "type" : "integer",
+            "description" : "中獎發票張數",
+            "example" : 1
+          },
+          "prizeAmount" : {
+            "type" : "integer",
+            "description" : "中獎發票金額",
+            "example" : 200
+          }
+        }
+      },
+      "Res" : {
+        "type" : "object",
+        "properties" : {
+          "v" : {
+            "$ref" : "#/components/schemas/v"
+          },
+          "code" : {
+            "$ref" : "#/components/schemas/code"
+          },
+          "msg" : {
+            "$ref" : "#/components/schemas/msg"
+          }
+        }
+      }
+    }
+  }
+}
