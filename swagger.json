@@ -5,7 +5,7 @@
     "description" : "電子發票應用 API 正式環境"
   } ],
   "info" : {
-    "description" : "電子發票 API 申請 (查詢發票): \n\nhttps://www.einvoice.nat.gov.tw/APMEMBERVAN/APIService/Registration\n\n電子發票應用 API 規格 1.5 版 PDF:\n\n\nhttps://www.einvoice.nat.gov.tw/home/DownLoad?fileName=1510206773173_0.pdf\n",
+    "description" : "電子發票 API 申請 (查詢發票): \n\nhttps://www.einvoice.nat.gov.tw/APMEMBERVAN/APIService/Registration\n\n電子發票應用 API 規格 1.7 版 PDF:\n\n\nhttps://www.einvoice.nat.gov.tw/home/DownLoad?fileName=1510206773173_0.pdf\n",
     "version" : "1.5",
     "title" : "電子發票應用 API 規格",
     "contact" : {
