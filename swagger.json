@@ -37,35 +37,21 @@
         "summary" : "查詢中獎發票號碼清單",
         "operationId" : "qryWinningList",
         "description" : "依開獎期別(雙數月)取得查詢期別，中獎獎別、號碼及中獎各獎獎金金額。",
-        "requestBody" : {
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/version02"
+        }, {
+          "in" : "query",
+          "name" : "action",
           "required" : true,
-          "content" : {
-            "application/x-www-form-urlencoded" : {
-              "schema" : {
-                "type" : "object",
-                "properties" : {
-                  "version" : {
-                    "$ref" : "#/components/parameters/version02"
-                  },
-                  "action" : {
-                    "type" : "string",
-                    "default" : "QryWinningList"
-                  },
-                  "invTerm" : {
-                    "$ref" : "#/components/parameters/invTerm"
-                  },
-                  "UUID" : {
-                    "$ref" : "#/components/parameters/UUID"
-                  },
-                  "appID" : {
-                    "$ref" : "#/components/securitySchemes/ApiKeyAuth"
-                  }
-                },
-                "required" : [ "version", "action", "invTerm", "appID" ]
-              }
-            }
+          "schema" : {
+            "type" : "string",
+            "default" : "QryWinningList"
           }
-        },
+        }, {
+          "$ref" : "#/components/parameters/type"
+        }, {
+          "$ref" : "#/components/parameters/invNum"
+        } ],
         "responses" : {
           "200" : {
             "description" : "回傳値",
