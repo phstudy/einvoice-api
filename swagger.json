@@ -58,7 +58,7 @@
                     "$ref" : "#/components/parameters/UUID"
                   },
                   "appID" : {
-                    "$ref" : "#/components/securitySchemes/UUID"
+                    "$ref" : "#/components/securitySchemes/ApiKeyAuth"
                   }
                 },
                 "required" : [ "version", "action", "invTerm", "appID" ]
