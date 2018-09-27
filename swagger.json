@@ -3,6 +3,9 @@
   "servers" : [ {
     "url" : "https://api.einvoice.nat.gov.tw",
     "description" : "電子發票應用 API 正式環境"
+  }, {
+    "url" : "https://wwwtest.einvoice.nat.gov.tw",
+    "description" : "電子發票應用 API 驗測環境"
   } ],
   "info" : {
     "description" : "電子發票 API 申請 (查詢發票): \n\nhttps://www.einvoice.nat.gov.tw/APMEMBERVAN/APIService/Registration\n\n電子發票應用 API 規格 1.7 版 PDF:\n\n\nhttps://www.einvoice.nat.gov.tw/home/DownLoad?fileName=1510206773173_0.pdf\n",
@@ -10,7 +13,7 @@
     "title" : "電子發票應用 API 規格",
     "contact" : {
       "name" : "財政部電子發票整合服務平台",
-      "url" : "https://www.einvoice.nat.gov.tw/"
+      "url" : "https://www.einvoice.nat.gov.tw"
     }
   },
   "tags" : [ {
@@ -28,19 +31,41 @@
     "ApiKeyAuth" : [ ]
   } ],
   "paths" : {
-    "/PB2CAPIVAN/invapp/InvApp?action=QryWinningList" : {
+    "/PB2CAPIVAN/invapp/InvApp" : {
       "post" : {
         "tags" : [ "查詢發票" ],
         "summary" : "查詢中獎發票號碼清單",
         "operationId" : "qryWinningList",
         "description" : "依開獎期別(雙數月)取得查詢期別，中獎獎別、號碼及中獎各獎獎金金額。",
-        "parameters" : [ {
-          "$ref" : "#/components/parameters/version02"
-        }, {
-          "$ref" : "#/components/parameters/invTerm"
-        }, {
-          "$ref" : "#/components/parameters/UUID"
-        } ],
+        "requestBody" : {
+          "required" : true,
+          "content" : {
+            "application/x-www-form-urlencoded" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "version" : {
+                    "$ref" : "#/components/parameters/version02"
+                  },
+                  "action" : {
+                    "type" : "string",
+                    "default" : "QryWinningList"
+                  },
+                  "invTerm" : {
+                    "$ref" : "#/components/parameters/invTerm"
+                  },
+                  "UUID" : {
+                    "$ref" : "#/components/parameters/UUID"
+                  },
+                  "appID" : {
+                    "$ref" : "#/components/securitySchemes/UUID"
+                  }
+                },
+                "required" : [ "version", "action", "invTerm", "appID" ]
+              }
+            }
+          }
+        },
         "responses" : {
           "200" : {
             "description" : "回傳値",
@@ -55,13 +80,21 @@
         }
       }
     },
-    "/PB2CAPIVAN/invapp/InvApp?action=qryInvHeader" : {
+    "/PB2CAPIVAN/invapp//InvApp" : {
       "post" : {
         "tags" : [ "查詢發票" ],
         "summary" : "查詢發票表頭",
         "operationId" : "qryInvHeader",
         "description" : "利用紙本電子發票上的二維條碼(QR Code)或者一維條碼(BarCode)，查詢該紙本電子發票表頭資訊，其回應資訊含:發票號碼、發票開立日期、賣方名稱 及發票狀態等資訊。",
         "parameters" : [ {
+          "in" : "query",
+          "name" : "action",
+          "required" : true,
+          "schema" : {
+            "type" : "string",
+            "default" : "qryInvHeader"
+          }
+        }, {
           "$ref" : "#/components/parameters/version03"
         }, {
           "$ref" : "#/components/parameters/type"
@@ -96,13 +129,21 @@
         }
       }
     },
-    "/PB2CAPIVAN/invapp/InvApp?action=qryInvDetail" : {
+    "/PB2CAPIVAN/invapp///InvApp" : {
       "post" : {
         "tags" : [ "查詢發票" ],
         "summary" : "查詢發票明細",
         "operationId" : "qryInvDetail",
         "description" : "利用紙本電子發票上的二維條碼(QR Code)或者一維條碼(BarCode)，查詢該紙本電子發票消費明細資料，至多查詢 99 次。",
         "parameters" : [ {
+          "in" : "query",
+          "name" : "action",
+          "required" : true,
+          "schema" : {
+            "type" : "string",
+            "default" : "qryInvDetail"
+          }
+        }, {
           "$ref" : "#/components/parameters/version03"
         }, {
           "$ref" : "#/components/parameters/type"
@@ -187,13 +228,21 @@
         }
       }
     },
-    "/PB2CAPIVAN/invServ/InvServ?action=carrierInvChk" : {
+    "/PB2CAPIVAN/invServ/InvServ" : {
       "post" : {
         "tags" : [ "載具發票" ],
         "summary" : "載具發票表頭查詢",
         "operationId" : "carrierInvChk",
         "description" : "可依載具卡別及載具隱碼查詢載具內所持有的消費發票。目前尚不支援 icash 卡別直接查詢。",
         "parameters" : [ {
+          "in" : "query",
+          "name" : "action",
+          "required" : true,
+          "schema" : {
+            "type" : "string",
+            "default" : "carrierInvChk"
+          }
+        }, {
           "$ref" : "#/components/parameters/version03"
         }, {
           "$ref" : "#/components/parameters/cardType"
@@ -252,13 +301,21 @@
         }
       }
     },
-    "/PB2CAPIVAN/invServ/InvServ?action=carrierInvDetail" : {
+    "/PB2CAPIVAN/invServ//InvServ" : {
       "post" : {
         "tags" : [ "載具發票" ],
         "summary" : "載具發票明細查詢",
         "operationId" : "carrierInvDetail",
         "description" : "查詢載具內所持有的發票消費明細。目前尚不支援 icash 卡別直接查詢。",
         "parameters" : [ {
+          "in" : "query",
+          "name" : "action",
+          "required" : true,
+          "schema" : {
+            "type" : "string",
+            "default" : "carrierInvDetail"
+          }
+        }, {
           "$ref" : "#/components/parameters/version03"
         }, {
           "$ref" : "#/components/parameters/cardType"
@@ -307,7 +364,7 @@
         }
       }
     },
-    "/PB2CAPIVAN/CarInv/Donate?action=carrierInvDnt" : {
+    "/PB2CAPIVAN/CarInv/Donate" : {
       "post" : {
         "tags" : [ "載具發票" ],
         "summary" : "載具發票捐贈",
@@ -318,6 +375,14 @@
           "SignatureAuth" : [ ]
         } ],
         "parameters" : [ {
+          "in" : "query",
+          "name" : "action",
+          "required" : true,
+          "schema" : {
+            "type" : "string",
+            "default" : "carrierInvDnt"
+          }
+        }, {
           "$ref" : "#/components/parameters/version01"
         }, {
           "$ref" : "#/components/parameters/serial"
@@ -410,7 +475,7 @@
         }
       }
     },
-    "/ods-main/ODS3" : {
+    "/ods-main/ODS371I/query" : {
       "servers" : [ {
         "url" : "https://sip.einvoice.nat.gov.tw"
       } ],
